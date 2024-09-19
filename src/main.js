@@ -156,6 +156,7 @@ class Game {
             }
             this.minoVr = 0;
         }
+        //ゲームオーバー
 
         //描画
         background(64);
@@ -166,18 +167,47 @@ class Game {
 }
 let geme;
 
+//スタート画面
+
+function startScreen() {
+    background(64);
+    textSize(32);
+    fill(255);
+    textAlign(CENTER);
+    text("Start push 'f' key", width / 2, height / 2);
+}
+
+//ゲームオーバー画面
+function endScreen() {
+    background(64);
+    textSize(32);
+    fill(255);
+    textAlign(CENTER);
+    text("Game Over", width / 2, height / 2);
+}
+
+
 function keyPressed() {
     if (keyCode === 65) game.minoVx = -1;
     if (keyCode === 68) game.minoVx = 1;
     if (keyCode === 81) game.minoVr = -1;
     if (keyCode === 69) game.minoVr = 1;
     if (keyCode === 83) game.minoDrop = true;
+    if(keyCode === 70) playing = true;
   }
 function setup() {
     createCanvas(360, 720);
     game = new Game();
 }
 
+let playing = false;
+
+
 function draw(){
-    game.proc();
+        if(playing){
+            game.proc(); 
+               }else{
+            startScreen();
+        }
+        
 }
