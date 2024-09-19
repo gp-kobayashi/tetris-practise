@@ -201,13 +201,15 @@ function setup() {
 }
 
 let playing = false;
-
+let gameEnd = false;
 
 function draw(){
         if(playing){
-            game.proc(); 
+            game.proc();
+                if(gameEnd){
+                    endScreen();
+                 } 
                }else{
             startScreen();
         }
-        
 }
