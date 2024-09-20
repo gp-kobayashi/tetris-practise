@@ -79,6 +79,9 @@ class Field {
     }
     putBlock(x, y){
         this.tiles[y][x]= 1;
+        if (y === 0) {
+            gameEnd = true;
+        }
     }
     findLineFilled(){
         for(let y=0; y<20; y++){
@@ -193,7 +196,7 @@ function keyPressed() {
     if (keyCode === 81) game.minoVr = -1;
     if (keyCode === 69) game.minoVr = 1;
     if (keyCode === 83) game.minoDrop = true;
-    if(keyCode === 70) playing = true;
+    if (keyCode === 70) playing = true;
   }
 function setup() {
     createCanvas(360, 720);
