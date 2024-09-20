@@ -79,9 +79,6 @@ class Field {
     }
     putBlock(x, y){
         this.tiles[y][x]= 1;
-        if (y === 0) {
-            gameEnd = true;
-        }
     }
     findLineFilled(){
         for(let y=0; y<20; y++){
@@ -112,6 +109,8 @@ class Game {
         this.minoVr = 0;
         this.field = new Field();
         this.fc = 0;
+        this.playing = false;
+        this.gameEnd = false;
     }
     static makeMino(){
         return new Mino(5, 2, 0, floor(random(0,7)));
@@ -119,6 +118,22 @@ class Game {
     static isMinoMovable(mino, field){
         let blocks = mino.calcBlocks();
         return blocks.every(b => field.tileAt(b.x, b.y) === 0);
+    }
+    //スタート画面
+    startScreen() {
+        background(64);
+        textSize(32);
+        fill(255);
+        textAlign(CENTER);
+        text("Start push 'f' key", width / 2, height / 2);
+    }
+    //ゲームオーバー画面
+    endScreen() {
+        background(64);
+        textSize(32);
+        fill(255);
+        textAlign(CENTER);
+        text("Game Over", width / 2, height / 2);
     }
     proc(){
         //落下
@@ -132,6 +147,9 @@ class Game {
                 for(let b of this.mino.calcBlocks()){
                   this.field.putBlock(b.x, b.y);
                   this.mino = Game.makeMino();
+                  if(b.y === 1){
+                    this.gameEnd = true;
+                  }
                 }
             }
         // 消去 Erase lines.
@@ -159,8 +177,7 @@ class Game {
             }
             this.minoVr = 0;
         }
-        //ゲームオーバー
-
+        
         //描画
         background(64);
         this.mino.draw();
@@ -170,25 +187,6 @@ class Game {
 }
 let geme;
 
-//スタート画面
-
-function startScreen() {
-    background(64);
-    textSize(32);
-    fill(255);
-    textAlign(CENTER);
-    text("Start push 'f' key", width / 2, height / 2);
-}
-
-//ゲームオーバー画面
-function endScreen() {
-    background(64);
-    textSize(32);
-    fill(255);
-    textAlign(CENTER);
-    text("Game Over", width / 2, height / 2);
-}
-
 
 function keyPressed() {
     if (keyCode === 65) game.minoVx = -1;
@@ -196,23 +194,21 @@ function keyPressed() {
     if (keyCode === 81) game.minoVr = -1;
     if (keyCode === 69) game.minoVr = 1;
     if (keyCode === 83) game.minoDrop = true;
-    if (keyCode === 70) playing = true;
+    if (keyCode === 70) game.playing = true;
   }
 function setup() {
     createCanvas(360, 720);
     game = new Game();
 }
 
-let playing = false;
-let gameEnd = false;
 
 function draw(){
-        if(playing){
+        if(game.playing){
             game.proc();
-                if(gameEnd){
-                    endScreen();
+                if(game.gameEnd){
+                    game.endScreen();
                  } 
                }else{
-            startScreen();
+            game.startScreen();
         }
 }
