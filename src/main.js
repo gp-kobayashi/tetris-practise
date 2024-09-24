@@ -121,16 +121,26 @@ class Game {
     }
     proc(){
     //スタート画面
-    if(!this.plaing){
+    if(!this.playing){
         background(64);
         textSize(32);
         fill(255);
         textAlign(CENTER);
         text("Start push 'f' key", width / 2, height / 2);
-    }if(this.playing){
-        //ゲーム画面
-        //落下
-        if (this.minoDrop || (this.fc%20) === 19) {
+        return;
+    }
+    
+    if(this.gameEnd){
+        //ゲームオーバー画面
+        background(64);
+        textSize(32);
+        fill(255);
+        textAlign(CENTER);
+        text("Game Over", width / 2, height / 2);
+        return;
+    }
+    
+    if (this.minoDrop || (this.fc%20) === 19) {
             let futureMino = this.mino.copy();
             futureMino.y += 1;
             if (Game.isMinoMovable(futureMino, this.field)) {
@@ -175,16 +185,8 @@ class Game {
         this.mino.draw();
         this.field.draw();
         this.fc++;
-        }if(this.gameEnd){
-            //ゲームオーバー画面
-            background(64);
-            textSize(32);
-            fill(255);
-            textAlign(CENTER);
-            text("Game Over", width / 2, height / 2);
         }
     }
-}
 let game;
 
 
