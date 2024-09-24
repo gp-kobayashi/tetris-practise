@@ -119,23 +119,16 @@ class Game {
         let blocks = mino.calcBlocks();
         return blocks.every(b => field.tileAt(b.x, b.y) === 0);
     }
+    proc(){
     //スタート画面
-    startScreen() {
+    if(!this.plaing){
         background(64);
         textSize(32);
         fill(255);
         textAlign(CENTER);
         text("Start push 'f' key", width / 2, height / 2);
-    }
-    //ゲームオーバー画面
-    endScreen() {
-        background(64);
-        textSize(32);
-        fill(255);
-        textAlign(CENTER);
-        text("Game Over", width / 2, height / 2);
-    }
-    proc(){
+    }if(this.playing){
+        //ゲーム画面
         //落下
         if (this.minoDrop || (this.fc%20) === 19) {
             let futureMino = this.mino.copy();
@@ -177,15 +170,22 @@ class Game {
             }
             this.minoVr = 0;
         }
-        
         //描画
         background(64);
         this.mino.draw();
         this.field.draw();
         this.fc++;
+        }if(this.gameEnd){
+            //ゲームオーバー画面
+            background(64);
+            textSize(32);
+            fill(255);
+            textAlign(CENTER);
+            text("Game Over", width / 2, height / 2);
+        }
     }
 }
-let geme;
+let game;
 
 
 function keyPressed() {
@@ -203,12 +203,5 @@ function setup() {
 
 
 function draw(){
-        if(game.playing){
-            game.proc();
-                if(game.gameEnd){
-                    game.endScreen();
-                 } 
-               }else{
-            game.startScreen();
-        }
+    game.proc();
 }
