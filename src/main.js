@@ -120,27 +120,25 @@ class Game {
         return blocks.every(b => field.tileAt(b.x, b.y) === 0);
     }
     proc(){
-    //スタート画面
-    if(!this.playing){
-        background(64);
-        textSize(32);
-        fill(255);
-        textAlign(CENTER);
-        text("Start push 'f' key", width / 2, height / 2);
-        return;
-    }
-    
-    if(this.gameEnd){
-        //ゲームオーバー画面
-        background(64);
-        textSize(32);
-        fill(255);
-        textAlign(CENTER);
-        text("Game Over", width / 2, height / 2);
-        return;
-    }
-    
-    if (this.minoDrop || (this.fc%20) === 19) {
+        //スタート画面
+        if(!this.playing){
+            background(64);
+            textSize(32);
+            fill(255);
+            textAlign(CENTER);
+            text("Start push 'f' key", width / 2, height / 2);
+            return;
+        }
+        if(this.gameEnd){
+            //ゲームオーバー画面
+            background(64);
+            textSize(32);
+            fill(255);
+            textAlign(CENTER);
+            text("Game Over", width / 2, height / 2);
+            return;
+        }
+        if (this.minoDrop || (this.fc%20) === 19) {
             let futureMino = this.mino.copy();
             futureMino.y += 1;
             if (Game.isMinoMovable(futureMino, this.field)) {
@@ -148,19 +146,19 @@ class Game {
             }else{
                 //接地
                 for(let b of this.mino.calcBlocks()){
-                  this.field.putBlock(b.x, b.y);
-                  this.mino = Game.makeMino();
-                  if(b.y === 1){
-                    this.gameEnd = true;
-                  }
+                    this.field.putBlock(b.x, b.y);
+                    this.mino = Game.makeMino();
+                    if(b.y === 1){
+                        this.gameEnd = true;
+                    }
                 }
             }
-        // 消去 Erase lines.
-        let line;
+            // 消去 Erase lines.
+            let line;
             while((line = this.field.findLineFilled()) !== -1) {
-            this.field.cutLine(line);
+                this.field.cutLine(line);
             }
-        this.minoDrop = false;
+            this.minoDrop = false;
         }
         //左右移動
         if(this.minoVx !== 0){
