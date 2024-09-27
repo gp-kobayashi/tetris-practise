@@ -111,6 +111,8 @@ class Game {
         this.fc = 0;
         this.playing = false;
         this.gameEnd = false;
+        this.resetCount = 3;
+        this.fieldReset = false;
     }
     static makeMino(){
         return new Mino(5, 2, 0, floor(random(0,7)));
@@ -138,7 +140,7 @@ class Game {
             text("Game Over", width / 2, height / 2);
             return;
         }
-        if (this.minoDrop || (this.fc%20) === 19) {
+        if ((this.fc%20) === 19) {
             let futureMino = this.mino.copy();
             futureMino.y += 1;
             if (Game.isMinoMovable(futureMino, this.field)) {
@@ -178,8 +180,19 @@ class Game {
             }
             this.minoVr = 0;
         }
+        //ブロック全削除
+        if(this.fieldReset && this.resetCount !== 0){
+            for(let y=0; y<20; y++){
+            this.field.cutLine(y);
+            }
+            this.fieldReset = false;
+            this.resetCount -= 1
+        }
         //描画
         background(64);
+        textSize(16);
+        text("全消し", 70, 30)
+        text(this.resetCount, 100, 30)
         this.mino.draw();
         this.field.draw();
         this.fc++;
@@ -195,6 +208,7 @@ function keyPressed() {
     if (keyCode === 69) game.minoVr = 1;
     if (keyCode === 83) game.minoDrop = true;
     if (keyCode === 70) game.playing = true;
+    if (keyCode === 87) game.fieldReset = true;
   }
 function setup() {
     createCanvas(360, 720);
