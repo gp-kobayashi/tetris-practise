@@ -91,6 +91,15 @@ class Field {
         this.tiles.splice(y, 1);
         this.tiles.unshift([1,0,0,0,0,0,0,0,0,0,0,1]);
     }
+    //下部にブロックがあるか
+    bottomLineBlocks(){
+        bottomLine = this.tiles[19];
+        let blocks = -2;
+        for(let i = 0; i < bottomLine.length; i++){
+            blocks += bottomLine[i];
+            }
+        return blocks;
+    }
     draw() {
         for(let y=0; y<21; y++) {
           for(let x=0; x<12; x++) {
@@ -181,7 +190,7 @@ class Game {
             this.minoVr = 0;
         }
         //ブロック全削除
-        if(this.fieldReset && this.resetCount !== 0){
+        if(this.fieldReset && this.resetCount !== 0 && this.field.bottomLineBlocks() > 0){
             for(let y=0; y<20; y++){
             this.field.cutLine(y);
             }
