@@ -168,9 +168,6 @@ class Game {
                 futureMino.y += 1;
             }
             this.mino.y = futureMino.y - 1;
-            for(let b of this.mino.calcBlocks()){
-                this.field.putBlock(b.x, b.y);
-            }
             this.minoDrop = false;
         }
         //左右移動
