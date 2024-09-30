@@ -192,14 +192,15 @@ class Game {
         //ブロック全削除
         if(this.fieldReset){
             if(this.resetCount !== 0 && this.field.bottomLineBlocks() > 0){
-            for(let y=0; y<20; y++){
-            this.field.cutLine(y);
+                for(let y=0; y<20; y++){
+                this.field.cutLine(y);
+                }
+                this.mino = Game.makeMino()
+                this.fieldReset = false;
+                this.resetCount -= 1
+            }else{
+                this.fieldReset = false;
             }
-            this.fieldReset = false;
-            this.resetCount -= 1
-        }else{
-            this.fieldReset = false;
-        }
         }
         //描画
         background(64);
