@@ -93,7 +93,7 @@ class Field {
     }
     //下部にブロックがあるか
     bottomLineBlocks(){
-        bottomLine = this.tiles[19];
+        let bottomLine = this.tiles[19];
         let blocks = -2;
         for(let i = 0; i < bottomLine.length; i++){
             blocks += bottomLine[i];
@@ -190,12 +190,16 @@ class Game {
             this.minoVr = 0;
         }
         //ブロック全削除
-        if(this.fieldReset && this.resetCount !== 0 && this.field.bottomLineBlocks() > 0){
+        if(this.fieldReset){
+            if(this.resetCount !== 0 && this.field.bottomLineBlocks() > 0){
             for(let y=0; y<20; y++){
             this.field.cutLine(y);
             }
             this.fieldReset = false;
             this.resetCount -= 1
+        }else{
+            this.fieldReset = false;
+        }
         }
         //描画
         background(64);
