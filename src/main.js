@@ -94,11 +94,8 @@ class Field {
     //下部にブロックがあるか
     isBottomLineBlocks(){
         let bottomLine = this.tiles[19];
-        let blocks = -2;
-        for(let i = 0; i < bottomLine.length; i++){
-            blocks += bottomLine[i];
-            }
-        return blocks > 0;
+        let sum = bottomLine.reduce((acc, cur) => acc + cur);
+        return sum > 2;
     }
     draw() {
         for(let y=0; y<21; y++) {
