@@ -91,6 +91,12 @@ class Field {
         this.tiles.splice(y, 1);
         this.tiles.unshift([1,0,0,0,0,0,0,0,0,0,0,1]);
     }
+    //下部にブロックがあるか
+    isBottomLineBlocks(){
+        let bottomLine = this.tiles[19];
+        let sum = bottomLine.reduce((acc, cur) => acc + cur);
+        return sum > 2;
+    }
     draw() {
         for(let y=0; y<21; y++) {
           for(let x=0; x<12; x++) {
@@ -111,6 +117,8 @@ class Game {
         this.fc = 0;
         this.playing = false;
         this.gameEnd = false;
+        this.resetCount = 3;
+        this.fieldReset = false;
     }
     static makeMino(){
         return new Mino(5, 2, 0, floor(random(0,7)));
@@ -188,8 +196,24 @@ class Game {
             }
             this.minoVr = 0;
         }
+        //ブロック全削除
+        if(this.fieldReset){
+            if(this.resetCount !== 0 && this.field.isBottomLineBlocks()){
+                for(let y=0; y<20; y++){
+                this.field.cutLine(y);
+                }
+                this.mino = Game.makeMino()
+                this.fieldReset = false;
+                this.resetCount -= 1
+            }else{
+                this.fieldReset = false;
+            }
+        }
         //描画
         background(64);
+        textSize(16);
+        text("全消し", 70, 30)
+        text(this.resetCount, 100, 30)
         this.mino.draw();
         this.field.draw();
         this.fc++;
@@ -205,6 +229,7 @@ function keyPressed() {
     if (keyCode === 69) game.minoVr = 1;
     if (keyCode === 83) game.minoDrop = true;
     if (keyCode === 70) game.playing = true;
+    if (keyCode === 87) game.fieldReset = true;
   }
 function setup() {
     createCanvas(360, 720);
