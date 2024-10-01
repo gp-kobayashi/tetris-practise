@@ -138,11 +138,11 @@ class Game {
             text("Game Over", width / 2, height / 2);
             return;
         }
-        if (this.minoDrop || (this.fc%20) === 19) {
+        if ((this.fc%20) === 19) {
             let futureMino = this.mino.copy();
             futureMino.y += 1;
             if (Game.isMinoMovable(futureMino, this.field)) {
-              this.mino.y += 1;
+              this.mino.y += 1; 
             }else{
                 //接地
                 for(let b of this.mino.calcBlocks()){
@@ -158,6 +158,16 @@ class Game {
             while((line = this.field.findLineFilled()) !== -1) {
                 this.field.cutLine(line);
             }
+            this.minoDrop = false;
+        }
+
+        //高速落下
+        if (this.minoDrop) {
+            let futureMino = this.mino.copy();
+            while (Game.isMinoMovable(futureMino, this.field)) {
+                futureMino.y += 1;
+            }
+            this.mino.y = futureMino.y - 1;
             this.minoDrop = false;
         }
         //左右移動
